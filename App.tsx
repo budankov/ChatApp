@@ -7,7 +7,7 @@ const App = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Hello Костя1!</Text>
+      <Text style={styles.title}>Hello Костя!</Text>
     </View>
   );
 };
