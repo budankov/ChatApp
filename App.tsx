@@ -1,10 +1,13 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { useNotification } from './src/notifications/useNotification';
 
 const App = () => {
+  useNotification();
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Hello World!</Text>
+      <Text style={styles.title}>Hello Костя1!</Text>
     </View>
   );
 };
