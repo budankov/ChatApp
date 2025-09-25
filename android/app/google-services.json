@@ -12,7 +12,20 @@
           "package_name": "com.budankov.chatty"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "771988960970-prjjnbmdji7sh4ack71e1snlkri11m0q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.budankov.chatty",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "771988960970-uclokvvhri781e60acuqeknnb2fqmmg4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBe1sgu7D0RirffHlCdFI4cGSaxziwbvPk"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "771988960970-uclokvvhri781e60acuqeknnb2fqmmg4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "771988960970-6mf95et9remb8bu9mov4oc3j2rs7sa91.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.budankov.chatty"
+              }
+            }
+          ]
         }
       }
     }
