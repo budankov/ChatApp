@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import BootSplash from 'react-native-bootsplash';
 // import GoogleSingInLesson from './src/lessons/GoogleSingInLesson';
-import CameraGallery from './src/lessons/CameraGallery';
+// import CameraGallery from './src/lessons/CameraGallery';
+import GoogleMap from './src/lessons/GoogleMap';
 import { useNotification } from './src/notifications/useNotification';
 
 const App = () => {
@@ -18,7 +19,7 @@ const App = () => {
 
   useNotification();
 
-  return <CameraGallery />;
+  return <GoogleMap />;
 };
 
 // const styles = StyleSheet.create();

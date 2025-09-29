@@ -79,10 +79,16 @@ ios/Pods/
 ios/build/
 ios/DerivedData/
 
+# Secrets (API keys, tokens)
+ios/Secrets*.xcconfig
+
 # Android
 android/.gradle/
+android/gradle.properties
 android/build/
 android/app/debug.keystore
 
 .bundle/
 .xcode.env
+android/gradle.properties
+android/gradle.properties

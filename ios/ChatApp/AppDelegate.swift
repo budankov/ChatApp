@@ -5,7 +5,7 @@ import ReactAppDependencyProvider
 import Firebase
 import GoogleSignIn
 import RNBootSplash
-
+import GoogleMaps
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -18,6 +18,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil
   ) -> Bool {
+
+     if let mapsKey = Bundle.main.object(forInfoDictionaryKey: "GOOGLE_MAPS_API_KEY") as? String {
+    GMSServices.provideAPIKey(mapsKey)
+    }
+    
     FirebaseApp.configure()
 
     let delegate = ReactNativeDelegate()
