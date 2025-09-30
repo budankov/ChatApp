@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import MapView, { Marker, PROVIDER_GOOGLE } from 'react-native-maps';
 
 const GoogleMap = () => {
   return (
@@ -10,10 +10,37 @@ const GoogleMap = () => {
       region={{
         latitude: 50.44968902397098,
         longitude: 30.525781543707208,
-        latitudeDelta: 0.015,
+        latitudeDelta: 0.045,
         longitudeDelta: 0.0121,
       }}
-    />
+    >
+      <Marker
+        coordinate={{
+          latitude: 50.44968902397098,
+          longitude: 30.525781543707208,
+        }}
+        title="Rozetka"
+        description="Графік роботи з пн-нд з 8:00 - 21:00"
+      />
+
+      <Marker
+        coordinate={{
+          latitude: 50.45968902397098,
+          longitude: 30.525781543707208,
+        }}
+        title="Rozetka"
+        description="Графік роботи з пн-нд з 9:00 - 22:00"
+      />
+
+      <Marker
+        coordinate={{
+          latitude: 50.44968902397098,
+          longitude: 30.535781543707208,
+        }}
+        title="Rozetka"
+        description="Графік роботи з пн-нд з 8:00 - 21:00"
+      />
+    </MapView>
   );
 };
 
