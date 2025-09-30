@@ -83,6 +83,7 @@ ios/DerivedData/
 ios/Secrets*.xcconfig
 
 # Android
+android/app/src/main/AndroidManifest.xml
 android/.gradle/
 android/gradle.properties
 android/build/

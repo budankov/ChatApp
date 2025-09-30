@@ -1,6 +1,15 @@
-import messaging from '@react-native-firebase/messaging';
+import { getApp } from '@react-native-firebase/app';
+import {
+  AuthorizationStatus,
+  getMessaging,
+  getToken,
+  onMessage,
+  requestPermission,
+} from '@react-native-firebase/messaging';
 import { useEffect } from 'react';
 import { Alert, PermissionsAndroid, Platform } from 'react-native';
+
+const messaging = getMessaging(getApp());
 
 const requestUserPermission = async () => {
   if (Platform.OS === 'android') {
@@ -14,10 +23,10 @@ const requestUserPermission = async () => {
       console.log('Notification permission denied (Android)');
     }
   } else if (Platform.OS === 'ios') {
-    const authStatus = await messaging().requestPermission();
+    const authStatus = await requestPermission(messaging);
     const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+      authStatus === AuthorizationStatus.AUTHORIZED ||
+      authStatus === AuthorizationStatus.PROVISIONAL;
 
     if (enabled) {
       console.log('Notification permission granted (iOS)');
@@ -27,9 +36,9 @@ const requestUserPermission = async () => {
   }
 };
 
-const getToken = async () => {
+const fetchToken = async () => {
   try {
-    const token = await messaging().getToken();
+    const token = await getToken(messaging);
     console.log('FCM Token', token);
   } catch (error) {
     console.log('Failed to get FCM Token', error);
@@ -38,13 +47,11 @@ const getToken = async () => {
 
 export const useNotification = () => {
   useEffect(() => {
-    requestUserPermission().then(() => {
-      getToken();
-    });
+    requestUserPermission().then(fetchToken);
   }, []);
 
   useEffect(() => {
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
+    const unsubscribe = onMessage(messaging, async remoteMessage => {
       const msgBody = remoteMessage.notification?.body;
       const msgTitle = remoteMessage.notification?.title;
       Alert.alert(msgTitle, JSON.stringify(msgBody));
