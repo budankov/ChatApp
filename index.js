@@ -2,6 +2,10 @@
  * @format
  */
 
+if (__DEV__) {
+  require('./ReactotronConfig');
+}
+
 import { getApp } from '@react-native-firebase/app';
 import {
   getMessaging,

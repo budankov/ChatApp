@@ -1,11 +1,10 @@
 import React, { useEffect } from 'react';
+import { StyleSheet } from 'react-native';
 import BootSplash from 'react-native-bootsplash';
-// import GoogleSingInLesson from './src/lessons/GoogleSingInLesson';
-// import CameraGallery from './src/lessons/CameraGallery';
-// import GoogleMap from './src/lessons/GoogleMap';
-// import { StyleSheet } from 'react-native';
-import VectorIcons from './src/lessons/VectorIcons';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { useNotification } from './src/notifications/useNotification';
+import ChatScreen from './src/screens/ChatScreen';
+import { colors } from './src/styles/colors';
 
 const App = () => {
   useEffect(() => {
@@ -20,9 +19,20 @@ const App = () => {
 
   useNotification();
 
-  return <VectorIcons />;
+  return (
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        <ChatScreen />
+      </SafeAreaView>
+    </SafeAreaProvider>
+  );
 };
 
-// const styles = StyleSheet.create();
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.black,
+  },
+});
 
 export default App;
