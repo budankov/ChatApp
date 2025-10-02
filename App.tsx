@@ -21,7 +21,7 @@ const App = () => {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} edges={['top']}>
         <ChatScreen />
       </SafeAreaView>
     </SafeAreaProvider>
