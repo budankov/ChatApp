@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
-import { FlatList, KeyboardAvoidingView, StyleSheet, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+  FlatList,
+  Keyboard,
+  KeyboardAvoidingView,
+  StyleSheet,
+  View,
+} from 'react-native';
 import { s } from 'react-native-size-matters';
 import AppHeader from '../components/AppHeader';
 import ChatInput from '../components/ChatInput';
 import ResponseMessageCard from '../components/ResponseMessageCard';
 import SentMessageCard from '../components/SentMessageCard';
 import { RECEIVED, SENT } from '../constants/chat';
-import { IS_IOS } from '../constants/platform';
 import { colors } from '../styles/colors';
 
 interface Message {
@@ -35,12 +40,34 @@ const ChatScreen = () => {
   ];
   const [messages, setMessages] = useState<Message[]>(messagesList);
 
+  const [flexToggle, setFlexToggle] = useState(false);
+
+  useEffect(() => {
+    const keyboardShowListener = Keyboard.addListener('keyboardDidShow', () => {
+      setFlexToggle(false);
+    });
+
+    const keyboardHideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setFlexToggle(true);
+    });
+
+    return () => {
+      keyboardShowListener.remove();
+      keyboardHideListener.remove();
+    };
+  }, []);
+
   return (
     <View style={styles.container}>
       <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior={IS_IOS ? 'padding' : undefined}
-        keyboardVerticalOffset={IS_IOS ? 50 : 0}
+        behavior="padding"
+        keyboardVerticalOffset={50}
+        style={
+          flexToggle
+            ? [{ flexGrow: 1 }, styles.container]
+            : [{ flex: 1 }, styles.container]
+        }
+        enabled={!flexToggle}
       >
         <AppHeader />
         <FlatList
