@@ -1,14 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import {
-  FlatList,
-  Keyboard,
-  KeyboardAvoidingView,
-  StyleSheet,
-  View,
-} from 'react-native';
+import React, { useEffect, useRef, useState } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { s } from 'react-native-size-matters';
 import AppHeader from '../components/AppHeader';
 import ChatInput from '../components/ChatInput';
+import EmptyChat from '../components/EmptyChat';
+import KeyboardAvoidingViewContainer from '../components/KeyboardAvoidingViewContainer';
 import ResponseMessageCard from '../components/ResponseMessageCard';
 import SentMessageCard from '../components/SentMessageCard';
 import { RECEIVED, SENT } from '../constants/chat';
@@ -21,57 +17,55 @@ interface Message {
 }
 
 const ChatScreen = () => {
-  const messagesList: Message[] = [
-    {
-      message: 'Hello',
-      id: 1,
-      type: SENT,
-    },
-    {
-      message: 'Hi, How can I help you today?',
-      id: 2,
-      type: RECEIVED,
-    },
-    {
-      message: 'Tell me about React Native',
-      id: 3,
-      type: SENT,
-    },
-  ];
-  const [messages, setMessages] = useState<Message[]>(messagesList);
+  const [messagesData, setMessagesData] = useState<Message[]>([]);
+  const [msgInput, setMsgInput] = useState<string>('');
+  const flatListRef = useRef<FlatList>(null);
 
-  const [flexToggle, setFlexToggle] = useState(false);
+  const scrollToBottom = () => {
+    if (flatListRef.current && messagesData.length > 0) {
+      flatListRef.current.scrollToEnd({ animated: true });
+    }
+  };
 
   useEffect(() => {
-    const keyboardShowListener = Keyboard.addListener('keyboardDidShow', () => {
-      setFlexToggle(false);
-    });
+    scrollToBottom();
+  }, [messagesData]);
 
-    const keyboardHideListener = Keyboard.addListener('keyboardDidHide', () => {
-      setFlexToggle(true);
-    });
+  const onMessageSent = (message: string) => {
+    setMessagesData(prevMessages => [
+      ...prevMessages,
+      {
+        message: msgInput,
+        id: prevMessages.length + 1,
+        type: SENT,
+      },
+    ]);
 
-    return () => {
-      keyboardShowListener.remove();
-      keyboardHideListener.remove();
-    };
-  }, []);
+    setTimeout(() => {
+      onGetResponse(
+        'Lorem Lorem*3 ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore Lorem*3 ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore Lorem*3 ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Lorem Lorem*3 ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore Lorem*3 ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore Lorem*3 ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+      );
+    }, 2000);
+  };
+
+  const onGetResponse = (responseMessage: string) => {
+    setMessagesData(prevMessages => [
+      ...prevMessages,
+      {
+        message: responseMessage,
+        id: prevMessages.length + 1,
+        type: RECEIVED,
+      },
+    ]);
+  };
 
   return (
     <View style={styles.container}>
-      <KeyboardAvoidingView
-        behavior="padding"
-        keyboardVerticalOffset={50}
-        style={
-          flexToggle
-            ? [{ flexGrow: 1 }, styles.container]
-            : [{ flex: 1 }, styles.container]
-        }
-        enabled={!flexToggle}
-      >
+      <KeyboardAvoidingViewContainer>
         <AppHeader />
         <FlatList
-          data={messages}
+          ref={flatListRef}
+          data={messagesData}
           keyExtractor={item => item.id?.toString()}
           renderItem={({ item }) => {
             return item.type === SENT ? (
@@ -81,9 +75,16 @@ const ChatScreen = () => {
             );
           }}
           contentContainerStyle={{ paddingHorizontal: s(8) }}
+          ListEmptyComponent={<EmptyChat />}
+          onLayout={scrollToBottom}
+          onContentSizeChange={scrollToBottom}
         />
-        <ChatInput />
-      </KeyboardAvoidingView>
+        <ChatInput
+          messageValue={msgInput}
+          setMessageValue={setMsgInput}
+          onMessageSent={onMessageSent}
+        />
+      </KeyboardAvoidingViewContainer>
     </View>
   );
 };
