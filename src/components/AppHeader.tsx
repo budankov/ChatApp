@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: vs(12),
+    paddingVertical: vs(2),
     backgroundColor: colors.black,
   },
 });

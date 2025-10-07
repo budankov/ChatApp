@@ -1,7 +1,7 @@
-yarn react-native-bootsplash generate src/assets/splash.png \
+yarn react-native-bootsplash generate src/assets/app-splash.png \
  --platforms=android,ios,web \
  --background=000000 \
- --logo-width=120 \
+ --logo-width=200 \
  --assets-output=assets/bootsplash \
  --flavor=main \
  --html=public/index.html
