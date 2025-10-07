@@ -7,12 +7,13 @@ import {
   requestPermission,
 } from '@react-native-firebase/messaging';
 import { useEffect } from 'react';
-import { Alert, PermissionsAndroid, Platform } from 'react-native';
+import { Alert, PermissionsAndroid } from 'react-native';
+import { IS_ANDROID, IS_IOS } from '../constants/platform';
 
 const messaging = getMessaging(getApp());
 
 const requestUserPermission = async () => {
-  if (Platform.OS === 'android') {
+  if (IS_ANDROID) {
     const granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.POST_NOTIFICATIONS,
     );
@@ -22,7 +23,7 @@ const requestUserPermission = async () => {
     } else {
       console.log('Notification permission denied (Android)');
     }
-  } else if (Platform.OS === 'ios') {
+  } else if (IS_IOS) {
     const authStatus = await requestPermission(messaging);
     const enabled =
       authStatus === AuthorizationStatus.AUTHORIZED ||

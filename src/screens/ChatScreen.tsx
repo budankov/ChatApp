@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { s } from 'react-native-size-matters';
+import { getOpenAIResponse } from '../api/http-requests';
 import AppHeader from '../components/AppHeader';
 import ChatInput from '../components/ChatInput';
 import EmptyChat from '../components/EmptyChat';
@@ -18,6 +19,7 @@ interface Message {
 
 const ChatScreen = () => {
   const [messagesData, setMessagesData] = useState<Message[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [msgInput, setMsgInput] = useState<string>('');
   const flatListRef = useRef<FlatList>(null);
 
@@ -42,10 +44,15 @@ const ChatScreen = () => {
     ]);
 
     setTimeout(() => {
-      onGetResponse(
-        'Lorem Lorem*3 ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore Lorem*3 ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore Lorem*3 ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua Lorem Lorem*3 ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore Lorem*3 ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore Lorem*3 ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-      );
-    }, 2000);
+      gerResFromAI(message);
+    }, 100);
+  };
+
+  const gerResFromAI = async (msg: string) => {
+    setIsLoading(true);
+    const generatedText = await getOpenAIResponse(msg);
+    onGetResponse(generatedText);
+    setIsLoading(false);
   };
 
   const onGetResponse = (responseMessage: string) => {
@@ -79,6 +86,9 @@ const ChatScreen = () => {
           onLayout={scrollToBottom}
           onContentSizeChange={scrollToBottom}
         />
+
+        {isLoading && <ResponseMessageCard message={'Thinking...'} />}
+
         <ChatInput
           messageValue={msgInput}
           setMessageValue={setMsgInput}
